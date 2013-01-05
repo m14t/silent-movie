@@ -14,6 +14,7 @@
           }
           body {
             color: #eee;
+            overflow: hidden;
             font-family: "silentina_filmregular", sans-serif;
             background:url(img/bg.png);
             background-size:100% 100%;
@@ -36,13 +37,31 @@
           <div id="output">
           </div>
         </div>
+        <script src="js/jquery-1.8.3.min.js"></script>
         <script src="http://<?php echo $_SERVER['HTTP_HOST']; ?>:8080/socket.io/socket.io.js"></script>
         <script>
             var socket = io.connect('http://<?php echo $_SERVER['HTTP_HOST']; ?>:8080'),
-                el = document.getElementById('output');
+                $el = $('#output'),
+                $body = $('body'),
+                size = parseInt($el.css('font-size'), 10);
+
             socket.on('output', function (data) {
+                var body_height = $body.height(),
+                    body_width = $body.width();
                 //-- Wrap in Smart Quotes
-                el.innerHTML = '&ldquo;'+ data +'&rdquo;';
+                $el.html('&ldquo;'+ data +'&rdquo;');
+                size = parseInt($el.css('font-size'), 10);
+                while ($el.height() <= body_height && $el.width() <= body_width) {
+                    size++;
+                    $el.css('font-size', size +'px');
+                    console.log('bigger', $el.css('font-size'), $el.height(), body_height, $el.width(), $body.width());
+                }
+                while ($el.height() > body_height && $el.width() > body_width) {
+                    size--;
+                    $el.css('font-size', size +'px');
+                    console.log('smaller', $el.css('font-size'), $el.height(), body_height, $el.width(), $body.width());
+                }
+                console.log('---');
             });
         </script>
     </body>
