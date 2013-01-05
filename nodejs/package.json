@@ -1,0 +1,10 @@
+{
+    "name": "silent-movie",
+    "version": "0.0.1",
+    "description": "A silent movie assistant app",
+    "author": "Matt Farmer <matt@mattfarmer.net>",
+    "dependencies": {
+        "socket.io": "0.9.x"
+    },
+    "engine": "node >= 0.8.16"
+}
