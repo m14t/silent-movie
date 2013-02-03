@@ -19,30 +19,53 @@
             background-size:100% 100%;
             background-repeat:no-repeat;
           }
+          #outer-wrapper {
+            position: relative;
+            top: 15%;
+            left: 10%;
+            height:  70%;
+            width:  80%;
+            overflow: hidden;
+            text-align: center;
+          }
           #wrapper {
             display: table;
-            height: 100%;
-            width: 100%;
           }
           #output {
             display: table-cell;
             vertical-align: middle;
-            text-align: center;
           }
       </style>
     </head>
     <body>
-        <div id="wrapper">
-          <div id="output">
+        <div id="outer-wrapper">
+          <div id="wrapper">
+            <div id="output">
+            </div>
           </div>
         </div>
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+        <script src="js/jquery.fittext.js"></script>
         <script src="http://<?php echo $_SERVER['HTTP_HOST']; ?>:8080/socket.io/socket.io.js"></script>
         <script>
             var socket = io.connect('http://<?php echo $_SERVER['HTTP_HOST']; ?>:8080'),
-                el = document.getElementById('output');
+                $el = $('#output'),
+                owh = $('#outer-wrapper').height(),
+                oww = $('#outer-wrapper').width(),
+                fs = parseInt($el.css('font-size'), 10);
             socket.on('output', function (data) {
                 //-- Wrap in Smart Quotes
-                el.innerHTML = '&ldquo;'+ data +'&rdquo;';
+                $el.html('&ldquo;'+ data +'&rdquo;');
+                while ($el.height() < owh && $el.width() < oww) {
+                  fs++;
+                  $el.css('font-size', fs+'px');
+                }
+                while ($el.height() > owh || $el.width() > oww) {
+                    fs--;
+                    $el.css('font-size', fs+'px');
+                }
+                fs--;
+                $el.css('font-size', fs+'px');
             });
         </script>
     </body>
