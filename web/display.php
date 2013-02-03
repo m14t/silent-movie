@@ -55,6 +55,7 @@
                 fs = parseInt($el.css('font-size'), 10);
             socket.on('output', function (data) {
                 //-- Wrap in Smart Quotes
+                $el.css('padding-top', 0);
                 $el.html('&ldquo;'+ data +'&rdquo;');
                 while ($el.height() < owh && $el.width() < oww) {
                   fs++;
@@ -66,6 +67,7 @@
                 }
                 fs--;
                 $el.css('font-size', fs+'px');
+                $el.css('padding-top', (owh - $el.height())/2);
             });
         </script>
     </body>
